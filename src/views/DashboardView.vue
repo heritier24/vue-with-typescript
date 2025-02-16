@@ -98,7 +98,7 @@
                   </a>
                 </li>
                 <li class="">
-                  <a href="/product-new">
+                  <a href="/product-add">
                     <i class="las la-minus"></i><span>Add Product</span>
                   </a>
                 </li>
@@ -1700,10 +1700,10 @@
             <div class="col-lg-6">
               <ul class="list-inline mb-0">
                 <li class="list-inline-item">
-                  <a href="backend/privacy-policy.html">Privacy Policy</a>
+                  <a href="#">Privacy Policy</a>
                 </li>
                 <li class="list-inline-item">
-                  <a href="backend/terms-of-service.html">Terms of Use</a>
+                  <a href="#">Terms of Use</a>
                 </li>
               </ul>
             </div>
