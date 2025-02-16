@@ -9,16 +9,12 @@
             </div>
           </div>
           <div class="card-body">
-            <form action="page-list-product.html" data-toggle="validator">
+            <form>
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Product Type *</label>
-                    <select
-                      name="type"
-                      class="selectpicker form-control"
-                      data-style="py-0"
-                    >
+                    <select v-model="productType" class="form-control">
                       <option>Standard</option>
                       <option>Combo</option>
                       <option>Digital</option>
@@ -26,139 +22,138 @@
                     </select>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Name *</label>
                     <input
+                      v-model="name"
                       type="text"
                       class="form-control"
                       placeholder="Enter Name"
-                      data-errors="Please Enter Name."
                       required
                     />
-                    <div class="help-block with-errors"></div>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Code *</label>
                     <input
+                      v-model="code"
                       type="text"
                       class="form-control"
                       placeholder="Enter Code"
-                      data-errors="Please Enter Code."
                       required
                     />
-                    <div class="help-block with-errors"></div>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Barcode Symbology *</label>
-                    <select
-                      name="type"
-                      class="selectpicker form-control"
-                      data-style="py-0"
-                    >
+                    <select v-model="barcodeSymbology" class="form-control">
                       <option>CREM01</option>
                       <option>UM01</option>
                       <option>SEM01</option>
                       <option>COF01</option>
-                      <option>FUN01</option>
-                      <option>DIS01</option>
-                      <option>NIS01</option>
                     </select>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Category *</label>
-                    <select
-                      name="type"
-                      class="selectpicker form-control"
-                      data-style="py-0"
-                    >
+                    <select v-model="category" class="form-control">
                       <option>Beauty</option>
                       <option>Grocery</option>
                       <option>Food</option>
                       <option>Furniture</option>
-                      <option>Shoes</option>
-                      <option>Frames</option>
-                      <option>Jewellery</option>
                     </select>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Cost *</label>
                     <input
+                      v-model="cost"
                       type="text"
                       class="form-control"
                       placeholder="Enter Cost"
-                      data-errors="Please Enter Cost."
                       required
                     />
-                    <div class="help-block with-errors"></div>
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Price *</label>
                     <input
+                      v-model="price"
                       type="text"
                       class="form-control"
                       placeholder="Enter Price"
-                      data-errors="Please Enter Price."
                       required
                     />
-                    <div class="help-block with-errors"></div>
                   </div>
                 </div>
+
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Tax Method *</label>
-                    <select
-                      name="type"
-                      class="selectpicker form-control"
-                      data-style="py-0"
-                    >
+                    <select v-model="taxMethod" class="form-control">
                       <option>Exclusive</option>
                       <option>Inclusive</option>
                     </select>
                   </div>
                 </div>
+
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Quantity *</label>
                     <input
+                      v-model="quantity"
                       type="text"
                       class="form-control"
                       placeholder="Enter Quantity"
                       required
                     />
-                    <div class="help-block with-errors"></div>
                   </div>
                 </div>
+
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Image</label>
                     <input
                       type="file"
-                      class="form-control image-file"
-                      name="pic"
-                      accept="image/*"
+                      class="form-control"
+                      @change="handleFileUpload"
                     />
                   </div>
                 </div>
+
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Description / Product Details</label>
-                    <textarea class="form-control" rows="4"></textarea>
+                    <textarea
+                      v-model="description"
+                      class="form-control"
+                      rows="4"
+                    ></textarea>
                   </div>
                 </div>
               </div>
-              <button type="button" class="btn btn-primary mr-2">
+
+              <button type="button"  @click="saveToLocalStorage" class="btn btn-primary mr-2">
                 Add Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                @click="saveToLocalStorage"
+              >
+                Submit to API
               </button>
               <button type="reset" class="btn btn-danger">Reset</button>
             </form>
@@ -169,3 +164,44 @@
     <!-- Page end  -->
   </div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Vue } from 'vue-class-component'
+
+const productType = ref<string>('')
+const name = ref<string>('')
+const code = ref<string>('')
+const barcodeSymbology = ref<string>('')
+const category = ref<string>('')
+const cost = ref<string>('')
+const price = ref<string>('')
+const taxMethod = ref<string>('')
+const quantity = ref<string>('')
+const image = ref<File | null>(null)
+const description = ref<string>('')
+
+const handleFileUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    image.value = target.files[0]
+  }
+}
+
+const saveToLocalStorage = () => {
+  const productData = {
+    productType: productType.value,
+    name: name.value,
+    code: code.value,
+    barcodeSymbology: barcodeSymbology.value,
+    category: category.value,
+    price: price.value,
+    taxMethod: taxMethod.value,
+    quantity: quantity.value,
+    image: image.value ? image.value.name : '',
+    description: description.value
+  }
+
+  localStorage.setItem('productData', JSON.stringify(productData))
+  alert('Product data saved to localStorage!')
+}
+</script>
