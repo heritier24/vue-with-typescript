@@ -28,6 +28,13 @@ const routes: Array<RouteRecordRaw> = [
         components: {
           dashboard: () => import('../components/DashboardItem.vue')
         }
+      },
+      {
+        path: '/product-list',
+        name: 'ProductList',
+        components: {
+          dashboard: () => import('../components/ProductList.vue')
+        }
       }
     ]
   }
