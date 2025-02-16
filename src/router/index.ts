@@ -18,7 +18,18 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: () => import('../views/DashboardView.vue')
+    components: {
+      default: () => import('../views/DashboardView.vue')
+    },
+    children: [
+      {
+        path: '',
+        name: 'DashboardItem',
+        components: {
+          dashboard: () => import('../components/DashboardItem.vue')
+        }
+      }
+    ]
   }
 ]
 
