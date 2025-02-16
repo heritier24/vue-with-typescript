@@ -101,16 +101,6 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label>Tax Method *</label>
-                    <select v-model="taxMethod" class="form-control">
-                      <option>Exclusive</option>
-                      <option>Inclusive</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group">
                     <label>Quantity *</label>
                     <input
                       v-model="quantity"
@@ -175,10 +165,11 @@ const barcodeSymbology = ref<string>('')
 const category = ref<string>('')
 const cost = ref<string>('')
 const price = ref<string>('')
-const taxMethod = ref<string>('')
 const quantity = ref<string>('')
 const image = ref<File | null>(null)
 const description = ref<string>('')
+
+const productList = ref<Array<Record<string, any>>>([])
 
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -195,13 +186,14 @@ const saveToLocalStorage = () => {
     barcodeSymbology: barcodeSymbology.value,
     category: category.value,
     price: price.value,
-    taxMethod: taxMethod.value,
     quantity: quantity.value,
     image: image.value ? image.value.name : '',
     description: description.value
   }
 
   localStorage.setItem('productData', JSON.stringify(productData))
+
+  productList.value = [productData]
   alert('Product data saved to localStorage!')
 }
 </script>
